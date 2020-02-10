@@ -1,5 +1,5 @@
 import React from "react";
 // import Playground from "./SimpleExamples/Playground0";
-import TodoList from "./TodoExample/TodoList.func";
+import Playground from "./BatteryExample/Playground.func";
 
-export default () => <TodoList />;
+export default () => <div style={{width: '50%'}}><Playground/></div>;

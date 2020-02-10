@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {useState, Component } from "react";
 
 export default class Playground0 extends Component {
   constructor(...args) {
@@ -29,13 +29,16 @@ export default class Playground0 extends Component {
 }
 
 export function PlaygroundX() {
+  const [text, setText] = useState("");
+  const [checkout, setCheckout] = useState(false);
+  const handleCheckboxToggle = e => setCheckout(prevCheckout => !prevCheckout);
   return (
     <section>
-      <input type="text" value={""} onChange={e => {}} />
-      <input type="checkbox" checked={false} onChange={e => {}} />
+      <input type="text" value={text} onChange={e => setText(e.target.value)} />
+      <input type="checkbox" checked={checkout} onChange={handleCheckboxToggle} />
       <ul>
-        <li>{""}</li>
-        <li>{""}</li>
+        <li>{text}</li>
+        <li>{checkout.toString()}</li>
       </ul>
     </section>
   );
