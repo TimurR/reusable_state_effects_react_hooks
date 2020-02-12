@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Battery from "./Battery";
 
-export default function Playground() {
+const useBattery = () => {
   const [battery, setBattery] = useState({ level: 0, charging: false });
   const handleChange = ({ target: { level, charging } }) =>
     setBattery({ level, charging });
@@ -19,7 +19,11 @@ export default function Playground() {
       battery.removeEventListener("chargingchange", handleChange);
     };
   }, []);
+  return battery;
+};
 
+export default function ViewBattery() {
+  const battery = useBattery();
   return (
     <section>
       <Battery {...battery} />

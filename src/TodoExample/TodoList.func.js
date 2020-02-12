@@ -4,23 +4,33 @@ import TodoItem from "./TodoItem";
 import { Container, List } from "./Styled";
 import About from "./About";
 
+const useLocalStorage = (key, def, callback) => {
+  const initialValue = () => {
+    const valueFromStorage = JSON.parse(
+      window.localStorage.getItem(key) || JSON.stringify(def)
+    );
+
+    if (callback) {
+      callback(valueFromStorage);
+    }
+    return valueFromStorage;
+  };
+  const [storage, setStorage] = useState(initialValue);
+  useEffect(() => {
+    window.localStorage.setItem(key, JSON.stringify(storage));
+  }, [storage]);
+
+  return [storage, setStorage];
+};
+
 export default function TodoList() {
   const [newTodo, updateNewTodo] = useState("");
   const todoId = useRef(0);
-  const initialTodos = () => {
-    const valueFromStorage = JSON.parse(
-      window.localStorage.getItem("todos") || "[]"
-    );
-    todoId.current = valueFromStorage.reduce(
-      (memo, todo) => Math.max(memo, todo.id),
-      0
-    );
-    return valueFromStorage;
-  };
-  const [todos, updateTodos] = useState(initialTodos);
-  useEffect(() => {
-    window.localStorage.setItem("todos", JSON.stringify(todos));
-  }, [todos]);
+
+  const [todos, updateTodos] = useLocalStorage("todos", [], values => {
+    todoId.current = values.reduce((memo, todo) => Math.max(memo, todo.id), 0);
+  });
+
   useEffect(() => {
     const inCompleteTodos = todos.reduce(
       (memo, todo) => (!todo.completed ? memo + 1 : memo),
